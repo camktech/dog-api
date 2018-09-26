@@ -10,3 +10,15 @@
     width: 400px
   }
 }
+
+#breed-list{
+  ul{
+    max-height: 250px;
+    overflow: scroll;
+    list-style: none;
+    background-color: #3D435C
+  }
+  a{
+    color: white;
+  }
+}

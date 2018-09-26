@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
-  resources :breeds
+  resources :breeds, only: [:index]
+  get 'breeds/:name' => 'breeds#show', as: 'breed_by_name'
 
   root "breeds#index"
 

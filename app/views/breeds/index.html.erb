@@ -1,9 +1,19 @@
-<div class="dog">
+<%= render "breed" %>
 
-  <h1>It's a dog</h1>
-
-  <h3><%= @breed.name.humanize %></h3>
-
-  <%= image_tag @breed.pic_url %>
-
+<div id="breed-list">
+  <ul>
+    <% @breed_list.each do |breed| %>
+      <% if has_sub_breeds(breed) %>
+        <% sub_breeds(breed).each do |sub_breed| %>
+          <li>
+            <%= link_to (sub_breed + " " + base_breed_name(breed)).titleize, breed_by_name_path({name: "#{base_breed_name(breed)}-#{sub_breed}"})%>
+          </li>
+        <% end %>
+      <% else %>
+        <li>
+          <%= link_to (base_breed_name(breed)).titleize, breed_by_name_path({name: base_breed_name(breed)}) %>
+        </li>  
+      <% end %>
+    <% end %>
+  </ul>
 </div>

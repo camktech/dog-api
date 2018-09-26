@@ -18,10 +18,14 @@ class DogBreedFetcher
     DogBreedFetcher.new(name).fetch
   end
 
+  def self.fetch_breed_list
+    fetch_breed_list_info["message"]
+  end
+
 private
   def fetch_info
     begin
-      JSON.parse(RestClient.get("https://dog.ceo/api/breeds/image/#{ @name }").body)
+      JSON.parse(RestClient.get(breed_url).body)
     rescue Object => e
       default_body
     end
@@ -33,4 +37,29 @@ private
       "message" => "https://images.dog.ceo/breeds/cattledog-australian/IMG_2432.jpg"
     }
   end
+
+  def breed_url
+    if @name == "random"
+      "https://dog.ceo/api/breeds/images/random"
+    else
+      "https://dog.ceo/api/breed/#{@name.gsub('-', '/')}/images/random"
+    end
+  end
+
+  def self.fetch_breed_list_info
+    begin
+      JSON.parse(RestClient.get("https://dog.ceo/api/breeds/list/all").body)
+    rescue Object => e
+      breed_list_error_body
+    end
+  end
+
+  def self.breed_list_error_body
+    {
+      "status" => "error",
+      "message" => []
+    }    
+  end
+
+  private_class_method :breed_list_error_body, :fetch_breed_list_info
 end
